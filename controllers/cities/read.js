@@ -3,9 +3,9 @@ import Cities from '../../models/Cities.js';
 // Obtener todos los productos
 let allCities = async (req, res, next) => {
     try {
-        let { name, id, country, continent, currency } = req.query;
+        let { name, country, continent, currency } = req.query;
         console.log(name);
-        console.log(id);
+     //   console.log(id);
         console.log(country);
         console.log(continent);
         console.log(currency);
@@ -13,9 +13,9 @@ let allCities = async (req, res, next) => {
         if(name){
             query.name = {$regex: name, $options: 'i'};
         };
-        if(id){
-            query.id = id;
-        };
+      //  if(id){
+    //        query.id = id;
+   //     };
         if(country){
             query.country = {$regex:country, $options: 'i'};
         };
@@ -38,7 +38,7 @@ let allCities = async (req, res, next) => {
 
     }
 }
-
+/*
 let cityById = async (req, res) => {
     try {
         let IdQuery = req.params.Id;
@@ -52,7 +52,7 @@ let cityById = async (req, res) => {
         return res.status(500).json({ response: error });
     }
 }
-
+*/
 let cityByName = async (req, res) => {
     try {
         let nameQuery = req.params.name;
@@ -84,15 +84,14 @@ let cityByCountry = async (req, res) => {
 
 let cityByContinent = async (req, res) => {
     try {
-        let continentoQuery = req.params.continent;
-        let city = await Cities.find({ continent: continentQuery });
-        if (city) {
-            return res.status(200).json({ response: city });
+        let continentQuery = req.params.continent; 
+        let cities = await Cities.find({ continent: continentQuery }); 
+        if (cities.length > 0) { 
+            return res.status(200).json({ response: cities });
         } else {
-            return res.status(404).json({ response: 'City not found' });
+            return res.status(404).json({ response: 'No cities found for the specified continent' });
         }
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(500).json({ response: error });
     }
 }
@@ -114,5 +113,5 @@ let cityByCurrency = async (req, res) => {
 
 
 
-export {allCities, cityById, cityByName, cityByCountry, cityByContinent, cityByCurrency}
+export {allCities, cityByName, cityByCountry, cityByContinent, cityByCurrency}
 
